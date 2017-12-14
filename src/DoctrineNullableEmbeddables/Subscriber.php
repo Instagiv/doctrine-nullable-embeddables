@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Fmasa\DoctrineNullableEmbeddables;
 
 use Doctrine\Common\Annotations\Reader;
@@ -25,7 +23,10 @@ class Subscriber implements EventSubscriber
 		$this->reader = $reader;
 	}
 
-	public function getSubscribedEvents(): array
+    /**
+     * @return array
+     */
+	public function getSubscribedEvents()
 	{
 		return ['postLoad'];
 	}
@@ -73,7 +74,7 @@ class Subscriber implements EventSubscriber
 		);
 	}
 
-	private function isEmpty($object, ClassMetadata $metadata): bool
+	private function isEmpty($object, ClassMetadata $metadata)
 	{
 		foreach ($metadata->getFieldNames() as $fieldName) {
 			if ($metadata->getFieldValue($object, $fieldName) !== null) {
@@ -84,7 +85,7 @@ class Subscriber implements EventSubscriber
 		return true;
 	}
 
-	private function hasNullableAnnotation(\ReflectionProperty $property): bool
+	private function hasNullableAnnotation(\ReflectionProperty $property)
 	{
 		return $this->reader->getPropertyAnnotation($property, Nullable::class) !== null;
 	}
